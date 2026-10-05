@@ -11,3 +11,5 @@
 
 ## Configuración sensible local
 appsettings.Local.json
+
+.env

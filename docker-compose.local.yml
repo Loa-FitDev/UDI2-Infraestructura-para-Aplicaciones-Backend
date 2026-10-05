@@ -3,42 +3,29 @@ services:
     image: postgres:17-alpine
     container_name: postgres_db
     restart: always
-
     environment:
       POSTGRES_DB: appdb
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: 2128
-
+      POSTGRES_PASSWORD: SecretPassword123!
     ports:
       - "5432:5432"
-
     volumes:
       - pgdata_vol:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-
     networks:
       - app-network
 
   web_api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: dotnet_api
-    restart: always
-    ports:
-      - "5000:5000"
     environment:
-      - ASPNETCORE_URLS=http://+:5000
-
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=postgres_db;Port=5432;Database=appdb;Username=admin;Password=SecretPassword123!
     depends_on:
       - postgres_db
-
     networks:
       - app-network
 
 volumes:
   pgdata_vol:
-
 networks:
   app-network:
     driver: bridge
