@@ -1,0 +1,13 @@
+## Archivos compilados y temporales de .NET
+[Bb]in/
+[Oo]bj/
+*.user
+*.userosscache
+*.sln.docstates
+
+## VS Code e IDEs
+.vscode/
+.idea/
+
+## Configuración sensible local
+appsettings.Local.json
