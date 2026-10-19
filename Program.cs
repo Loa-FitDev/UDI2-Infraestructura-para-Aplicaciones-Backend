@@ -19,6 +19,21 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.EnsureCreated();
+    
+    // Fallback: crear tabla Items explícitamente si EnsureCreated no la creó (ej. pooler Supabase)
+    var tableExists = db.Database.SqlQueryRaw<int>(
+        "SELECT 1 FROM information_schema.tables WHERE table_name = 'Items' AND table_schema = 'public'")
+        .Any();
+    
+    if (!tableExists)
+    {
+        db.Database.ExecuteSqlRaw(@"
+            CREATE TABLE \"Items\" (
+                \"Id\" SERIAL PRIMARY KEY,
+                \"Name\" VARCHAR(200) NOT NULL,
+                \"CreatedAt\" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+            );");
+    }
 }
 
 app.Use(async (context, next) =>
