@@ -1,32 +1,5 @@
 services:
-  postgres_db:
-    image: postgres:17-alpine
-    container_name: postgres_db
-    restart: always
-    environment:
-      POSTGRES_DB: appdb
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: SecretPassword123!
-    ports:
-      - "5432:5432"
-    volumes:
-      - pgdata_vol:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - app-network
-
   web_api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=${SUPABASE_CONNECTION_STRING}
-
-    depends_on:
-      - postgres_db
-    networks:
-      - app-network
-
-volumes:
-  pgdata_vol:
-networks:
-  app-network:
-    driver: bridge

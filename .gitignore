@@ -1,15 +1,22 @@
-## Archivos compilados y temporales de .NET
-[Bb]in/
-[Oo]bj/
-*.user
-*.userosscache
-*.sln.docstates
-
-## VS Code e IDEs
-.vscode/
-.idea/
-
-## Configuración sensible local
-appsettings.Local.json
-
+# Archivos de entorno (credenciales - NO subir a Git)
 .env
+.env.local
+.env.*.local
+
+# Build outputs
+bin/
+obj/
+publish/
+
+# IDE
+.vs/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
