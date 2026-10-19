@@ -28,10 +28,10 @@ using (var scope = app.Services.CreateScope())
     if (!tableExists)
     {
         db.Database.ExecuteSqlRaw(@"
-            CREATE TABLE \"Items\" (
-                \"Id\" SERIAL PRIMARY KEY,
-                \"Name\" VARCHAR(200) NOT NULL,
-                \"CreatedAt\" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+            CREATE TABLE ""Items"" (
+                ""Id"" SERIAL PRIMARY KEY,
+                ""Name"" VARCHAR(200) NOT NULL,
+                ""CreatedAt"" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
             );");
     }
 }
