@@ -13,4 +13,9 @@ services:
     dns:
       - 8.8.8.8
       - 8.8.4.4
-    network_mode: "host"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

@@ -10,7 +10,7 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connect
 builder.WebHost.ConfigureKestrel(options =>
 {
     // Configuración de Kestrel para aceptar solicitudes HTTP/1.1 y HTTP/2
-    options.ListenAnyIP(5271);
+    options.ListenAnyIP(5000);
     options.ListenAnyIP(8080);
 });
 
