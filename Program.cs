@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 
-record CreateItemDto(string Name);
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Configuración de Entity Framework para PostgreSQL / Supabase
@@ -119,16 +117,27 @@ return Results.Ok(items);
 
 
 // 3. Endpoint para probar escrituras / CORS desde clientes web
-app.MapPost("/api/items", async (CreateItemDto dto, AppDbContext db) =>
+app.MapPost("/api/items", async (HttpRequest request, AppDbContext db) =>
 {
-if (string.IsNullOrWhiteSpace(dto.Name)){
-return Results.BadRequest("El nombre del item no puede estar vacío.");
-}
-var newItem = new Item{Name = dto.Name, CreatedAt = DateTime.UtcNow};
-db.Items.Add(newItem);
-await db.SaveChangesAsync();
-return Results.Created($"/api/items/{newItem.Id}", newItem);
+    using var reader = new StreamReader(request.Body);
+    var body = await reader.ReadToEndAsync();
+    var json = System.Text.Json.JsonDocument.Parse(body);
+    var name = json.RootElement.GetProperty("name").GetString();
+    
+    if (string.IsNullOrWhiteSpace(name)){
+        return Results.BadRequest("El nombre del item no puede estar vacío.");
+    }
+    var newItem = new Item{Name = name, CreatedAt = DateTime.UtcNow};
+    db.Items.Add(newItem);
+    await db.SaveChangesAsync();
+    return Results.Created($"/api/items/{newItem.Id}", newItem);
 });
 
 
 app.Run();
+
+// DTO para binding de POST (debe ir después de top-level statements)
+public class CreateItemDto
+{
+    public string Name { get; set; } = string.Empty;
+}
