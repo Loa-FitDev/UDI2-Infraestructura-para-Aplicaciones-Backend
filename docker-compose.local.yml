@@ -18,7 +18,7 @@ services:
   web_api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Host=db.qgpknwwrklmfmwholhcw.supabase.co;Port=5432;Database=postgres;Username=postgres;Password=NNzgYQmqVCT7VjjC
+      - ConnectionStrings__DefaultConnection=Host=postgres_db;Port=5432;Database=appdb;Username=admin;Password=SecretPassword123!
     depends_on:
       - postgres_db
     networks:
