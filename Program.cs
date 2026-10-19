@@ -117,16 +117,18 @@ return Results.Ok(items);
 
 
 // 3. Endpoint para probar escrituras / CORS desde clientes web
-app.MapPost("/api/items", async ([FromBody] string name, AppDbContext db) =>
+app.MapPost("/api/items", async (CreateItemDto dto, AppDbContext db) =>
 {
-if (string.IsNullOrWhiteSpace(name)){
+if (string.IsNullOrWhiteSpace(dto.Name)){
 return Results.BadRequest("El nombre del item no puede estar vacío.");
 }
-var newItem = new Item{Name = name, CreatedAt = DateTime.UtcNow};
+var newItem = new Item{Name = dto.Name, CreatedAt = DateTime.UtcNow};
 db.Items.Add(newItem);
 await db.SaveChangesAsync();
 return Results.Created($"/api/items/{newItem.Id}", newItem);
 });
+
+record CreateItemDto(string Name);
 
 
 app.Run();
