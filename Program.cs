@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 
+record CreateItemDto(string Name);
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Configuración de Entity Framework para PostgreSQL / Supabase
@@ -127,8 +129,6 @@ db.Items.Add(newItem);
 await db.SaveChangesAsync();
 return Results.Created($"/api/items/{newItem.Id}", newItem);
 });
-
-record CreateItemDto(string Name);
 
 
 app.Run();
